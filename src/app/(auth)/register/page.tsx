@@ -28,7 +28,6 @@ export default function Register() {
         <CardContent>
           
           <form action={register}>
-            <Toaster />
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <Label className="text-zinc-100" htmlFor="email">Name</Label>

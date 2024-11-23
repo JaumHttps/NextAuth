@@ -11,7 +11,12 @@ import { compareSync } from "bcrypt-ts"
 export const {
   handlers: {GET, POST},
   auth,
+  signIn,
 } = NextAuth({
+  pages: {
+    signIn: "/login",
+    newUser: "/register",
+  },
   providers: [Credentials({
     credentials: {
       email: {},
