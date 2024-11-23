@@ -3,6 +3,7 @@
 // Usando função no lado server para cadastrar os novos usuários, está sendo disparado atraves das actions
 
 import db from "@/lib/db"
+import { hashSync } from "bcrypt-ts";
 
 export default async function register (formData : FormData){
   
@@ -26,7 +27,7 @@ export default async function register (formData : FormData){
     data: {
       email,
       name,
-      password,
+      password: hashSync(password, 10),
     }
   })
 
