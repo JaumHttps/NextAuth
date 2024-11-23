@@ -9,5 +9,17 @@ export const {
   handlers: {GET, POST},
   auth,
 } = NextAuth({
-  providers: [Credentials],
+  providers: [Credentials({
+    credentials: {
+      username: {},
+      password: {}
+    },
+    authorize(credentials){
+      if(credentials.username === 'admin' && credentials.password === 'admin'){
+        return {name: credentials.username, email: credentials.password}
+      }else {
+        return null
+      }
+    }
+  })],
 });
