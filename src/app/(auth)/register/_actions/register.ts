@@ -4,6 +4,7 @@
 
 import db from "@/lib/db"
 import { hashSync } from "bcrypt-ts";
+import { redirect } from "next/navigation";
 
 export default async function register (formData : FormData){
   
@@ -23,7 +24,7 @@ export default async function register (formData : FormData){
     throw new Error("Usuário já cadastrado");
   }
   
-  const user = await db.user.create({
+  await db.user.create({
     data: {
       email,
       name,
@@ -31,5 +32,5 @@ export default async function register (formData : FormData){
     }
   })
 
-  console.log(user)
+  redirect('/')
 }

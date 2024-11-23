@@ -5,21 +5,42 @@ import Credentials from "next-auth/providers/credentials"
 //   providers: [Credentials]
 // })
 
+import db from "@/lib/db"
+import { compareSync } from "bcrypt-ts"
+
 export const {
   handlers: {GET, POST},
   auth,
 } = NextAuth({
   providers: [Credentials({
     credentials: {
-      username: {},
+      email: {},
       password: {}
     },
-    authorize(credentials){
-      if(credentials.username === 'admin' && credentials.password === 'admin'){
-        return {name: credentials.username, email: credentials.password}
-      }else {
+    async authorize(credentials){
+      const email = credentials.email as string
+      const password = credentials.password as string
+      
+      if (!email || !password) {
         return null
       }
+      
+      const user = await db.user.findUnique({
+        where: { email },
+      })
+
+      if (!user) {
+        return null
+      }
+
+      if (compareSync(password, user.password || "")) {
+        return { 
+          name: user.name,
+          email: user.email,
+          password: user.password 
+        }
+      }
+      return null
     }
   })],
 });
